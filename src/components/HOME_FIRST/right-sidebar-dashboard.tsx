@@ -1,13 +1,11 @@
 "use client"
 
 import { type SetStateAction, useState } from "react"
-import { Search, Bell, Check } from "lucide-react"
+import { Search, Bell, Check, Flame, Monitor, X } from "lucide-react"
 import { Input } from "@/components/ui/input"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Checkbox } from "@/components/ui/checkbox"
 import { Button } from "@/components/ui/button"
-import { SiFireship } from "react-icons/si"
-import { IoIosDesktop } from "react-icons/io"
 
 interface TodoItem {
   id: string
@@ -46,15 +44,13 @@ export default function RightSidebarDashboard({ onClose = () => {} }: RightSideb
   }
 
   return (
-    <div className="w-[270px] h-screen md:h-[860px] bg-gray-100 rounded-2xl shadow-sm border border-gray-100 overflow-hidden flex flex-col p-2  md:overflow-hidden overflow-y-auto">
+    <div className="w-[270px] h-screen md:h-[860px] bg-gray-100 rounded-2xl shadow-sm border border-gray-100 overflow-hidden flex flex-col p-2 pr-4  md:overflow-hidden overflow-y-auto">
       {/* Header Section */}
       <div className="p-4 border-b border-gray-100">
         <div className="flex items-center gap-3">
           {/* Close button for mobile */}
           <button className="md:hidden p-1 hover:bg-gray-200 rounded-md transition-colors" onClick={() => onClose?.()}>
-            <svg className="w-4 h-4 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-            </svg>
+            <X className="w-4 h-4 text-gray-600" />
           </button>
 
           <div className="relative flex-1">
@@ -83,7 +79,7 @@ export default function RightSidebarDashboard({ onClose = () => {} }: RightSideb
       <div className="p-4 border-b border-gray-100 bg-white rounded-3xl mt-5 ">
         <div className="flex items-center gap-2 mb-3">
           <div className=" text-orange-600 flex items-center justify-center">
-            <SiFireship size={24} />
+            <Flame size={24} />
           </div>
           <div className="flex flex-col">
             <span className="text-orange-600 font-medium text-sm">1234 day streak</span>
@@ -135,7 +131,7 @@ export default function RightSidebarDashboard({ onClose = () => {} }: RightSideb
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-3">
                   <div className=" bg-[#F2FBEB] rounded-md shadow-sm  p-1 text-[#027A48] ">
-                    <IoIosDesktop />
+                    <Monitor />
                   </div>
                   <span className="text-sm font-medium text-gray-700">{task.name}</span>
                 </div>
