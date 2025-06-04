@@ -26,20 +26,24 @@ export function CircularProgressChart({ progress }: CircularProgressChartProps) 
   }, [progress])
 
   return (
-    <div className="relative inline-block">
+    <div className="relative inline-block w-32 h-32 sm:w-40 sm:h-40 md:w-48 md:h-48 lg:w-56 lg:h-56">
       {/* Background decorative dots */}
       <div className="absolute inset-0 flex items-center justify-center">
-        <div className="w-48 h-48 relative">
-          <div className="absolute top-4 right-8 w-2 h-2 bg-green-400 rounded-full"></div>
-          <div className="absolute top-12 right-4 w-1.5 h-1.5 bg-green-300 rounded-full"></div>
-          <div className="absolute bottom-8 left-4 w-2 h-2 bg-green-400 rounded-full"></div>
-          <div className="absolute bottom-16 left-8 w-1 h-1 bg-green-300 rounded-full"></div>
-          <div className="absolute top-8 left-12 w-1.5 h-1.5 bg-green-300 rounded-full"></div>
-          <div className="absolute bottom-4 right-12 w-1 h-1 bg-green-300 rounded-full"></div>
+        <div className="w-full h-full relative">
+          <div className="absolute top-[8%] right-[17%] w-1.5 h-1.5 sm:w-2 sm:h-2 bg-green-400 rounded-full"></div>
+          <div className="absolute top-[25%] right-[8%] w-1 h-1 sm:w-1.5 sm:h-1.5 bg-green-300 rounded-full"></div>
+          <div className="absolute bottom-[17%] left-[8%] w-1.5 h-1.5 sm:w-2 sm:h-2 bg-green-400 rounded-full"></div>
+          <div className="absolute bottom-[33%] left-[17%] w-0.5 h-0.5 sm:w-1 sm:h-1 bg-green-300 rounded-full"></div>
+          <div className="absolute top-[17%] left-[25%] w-1 h-1 sm:w-1.5 sm:h-1.5 bg-green-300 rounded-full"></div>
+          <div className="absolute bottom-[8%] right-[25%] w-0.5 h-0.5 sm:w-1 sm:h-1 bg-green-300 rounded-full"></div>
         </div>
       </div>
 
-      <svg height={radius * 2} width={radius * 2} className="transform -rotate-90">
+      <svg
+        className="w-full h-full transform -rotate-90"
+        viewBox={`0 0 ${radius * 2} ${radius * 2}`}
+        preserveAspectRatio="xMidYMid meet"
+      >
         {/* Background circle */}
         <circle
           stroke="#E5E7EB"
@@ -70,8 +74,49 @@ export function CircularProgressChart({ progress }: CircularProgressChartProps) 
       {/* Center content */}
       <div className="absolute inset-0 flex items-center justify-center">
         <div className="text-center">
-          <div className="text-3xl font-bold text-gray-900">{Math.round(animatedProgress)}%</div>
-          <div className="text-sm text-gray-500 mt-1">of 100</div>
+          <div className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold text-gray-900">
+            {Math.round(animatedProgress)}%
+          </div>
+          <div className="text-xs sm:text-sm text-gray-500 mt-0.5 sm:mt-1">of 100</div>
+        </div>
+      </div>
+    </div>
+  )
+}
+
+// Demo component to show the responsive chart
+export default function Component() {
+  const [progress, setProgress] = useState(75)
+
+  return (
+    <div className="min-h-screen bg-gray-50 flex items-center justify-center p-4">
+      <div className="bg-white rounded-lg shadow-lg p-6 sm:p-8 md:p-12">
+        <div className="text-center mb-6 sm:mb-8">
+          <h2 className="text-xl sm:text-2xl md:text-3xl font-bold text-gray-900 mb-2">Progress Chart</h2>
+          <p className="text-sm sm:text-base text-gray-600">Fully responsive circular progress indicator</p>
+        </div>
+
+        <div className="flex justify-center mb-6 sm:mb-8">
+          <CircularProgressChart progress={progress} />
+        </div>
+
+        <div className="space-y-4">
+          <div className="flex items-center justify-between">
+            <label className="text-sm font-medium text-gray-700">Progress: {progress}%</label>
+          </div>
+          <input
+            type="range"
+            min="0"
+            max="100"
+            value={progress}
+            onChange={(e) => setProgress(Number(e.target.value))}
+            className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer slider"
+          />
+          <div className="flex justify-between text-xs text-gray-500">
+            <span>0%</span>
+            <span>50%</span>
+            <span>100%</span>
+          </div>
         </div>
       </div>
     </div>

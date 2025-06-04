@@ -20,35 +20,35 @@ const CourseCards = () => {
     {
       id: 1,
       title: "Web Design",
-      subtitle: "Design Learn Management System",
+      subtitle: "Design Learn Management ",
       category: "UI/UX Design",
       weeksLeft: 6,
       progress: 55,
       progressColor: "warning",
       avatarSrc: "/carddp.png",
-      description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat."
+      description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim ."
     },
     {
       id: 2,
       title: "Web Development",
-      subtitle: "Design Learn Management System",
+      subtitle: "Design Learn Management ",
       category: "javascript",
       weeksLeft: 6,
       progress: 55,
       progressColor: "success",
       avatarSrc: "/carddp.png",
-      description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat."
+      description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim ."
     },
     {
       id: 3,
       title: "CSS & HTML",
-      subtitle: "Design Learn Management System",
+      subtitle: "Design Learn Management ",
       category: "UI/UX Design",
       weeksLeft: 6,
       progress: 55,
       progressColor: "primary",
       avatarSrc: "/carddp.png",
-      description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat."
+      description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim ."
     }
   ];
 
@@ -65,10 +65,10 @@ const CourseCards = () => {
               
               {/* Header */}
               <div className="mb-4">
-                <h3 className="text-xl font-extrabold text-gray-900 mb-1">
+                <h3 className="text-sm sm:text-xl font-bold text-gray-900 mb-1">
                   {course.title}
                 </h3>
-                <p className="text-sm text-gray-400 mb-3">
+                <p className="text-[10px] sm:text-sm text-gray-400 mb-3">
                   {course.subtitle}
                 </p>
                 <Chip 
@@ -101,7 +101,7 @@ const CourseCards = () => {
               </div>
 
               {/* Description */}
-              <p className="text-sm text-gray-600 leading-relaxed mb-6 line-clamp-4">
+              <p className="text-sm text-gray-600 text-center leading-[20px] mb-6 line-clamp-4">
                 {course.description}
               </p>
 

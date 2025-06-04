@@ -10,7 +10,7 @@ export function StatsSection() {
   }
 
   return (
-    <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+    <div className="grid grid-cols-1 md:grid-cols-4 gap-3">
       <StatCard title="Highest Streak" value={stats.streak} type="streak" />
       <StatCard title="Projects Completed" value={stats.projects} type="projects" />
       <StatCard title="Total Points" value={stats.points} type="points" />

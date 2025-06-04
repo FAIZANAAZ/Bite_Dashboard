@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useRef, useEffect } from "react"
 import { BarChart, Bar, XAxis, YAxis, ResponsiveContainer, Cell } from "recharts"
 import { RiVipDiamondFill } from "react-icons/ri"
 
@@ -22,16 +22,18 @@ const defaultData: DayData[] = [
   { day: "Thu", value: 65, duration: "30 min" },
   { day: "Fri", value: 80, duration: "50 min" },
   { day: "Sat", value: 50, duration: "35 min" },
-  { day: "Sun", value: 40, duration: "20 min" }
+  { day: "Sun", value: 40, duration: "20 min" },
 ]
 
 export function WeeklyBarChart({ data = defaultData }: WeeklyBarChartProps) {
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null)
   const [clickedIndex, setClickedIndex] = useState<number | null>(null)
-  
+  const [barPositions, setBarPositions] = useState<{ x: number; y: number; width: number }[]>([])
+  const chartRef = useRef<HTMLDivElement>(null)
+
   // Find the highest value to show diamond icon
-  const maxValue = Math.max(...data.map(item => item.value))
-  const maxIndex = data.findIndex(item => item.value === maxValue)
+  const maxValue = Math.max(...data.map((item) => item.value))
+  const maxIndex = data.findIndex((item) => item.value === maxValue)
 
   const handleBarClick = (index: number) => {
     setClickedIndex(clickedIndex === index ? null : index)
@@ -49,11 +51,48 @@ export function WeeklyBarChart({ data = defaultData }: WeeklyBarChartProps) {
     }
   }
 
+  // Calculate bar positions after render
+  useEffect(() => {
+    if (!chartRef.current) return
+
+    const updateBarPositions = () => {
+      const chartContainer = chartRef.current
+      if (!chartContainer) return
+
+      const barElements = chartContainer.querySelectorAll(".recharts-bar-rectangle")
+      const newPositions = Array.from(barElements).map((bar) => {
+        const rect = bar.getBoundingClientRect()
+        const containerRect = chartContainer.getBoundingClientRect()
+
+        return {
+          x: rect.x - containerRect.x + rect.width / 2,
+          y: rect.y - containerRect.y,
+          width: rect.width,
+        }
+      })
+
+      setBarPositions(newPositions)
+    }
+
+    // Initial calculation
+    setTimeout(updateBarPositions, 100)
+
+    // Update on resize
+    const resizeObserver = new ResizeObserver(updateBarPositions)
+    resizeObserver.observe(chartRef.current)
+
+    return () => {
+      if (chartRef.current) {
+        resizeObserver.unobserve(chartRef.current)
+      }
+    }
+  }, [data])
+
   return (
-    <div className="relative">
+    <div className="relative w-full" ref={chartRef}>
       <div className="h-80 w-full">
         <ResponsiveContainer width="100%" height="100%">
-          <BarChart data={data} margin={{ top: 40, right: 30, left: 20, bottom: 5 }}>
+          <BarChart data={data} margin={{ top: 40, right: 5, left: 5, bottom: 5 }}>
             <XAxis
               dataKey="day"
               axisLine={false}
@@ -70,47 +109,44 @@ export function WeeklyBarChart({ data = defaultData }: WeeklyBarChartProps) {
               ticks={[0, 20, 40, 60, 80, 100]}
             />
 
-            <Bar 
-              dataKey="value" 
-              radius={[4, 4, 0, 0]} 
+            <Bar
+              dataKey="value"
+              radius={[4, 4, 0, 0]}
               barSize={12}
-              onMouseEnter={( index) => setHoveredIndex(index)}
+              onMouseEnter={(_, index) => setHoveredIndex(index)}
               onMouseLeave={() => setHoveredIndex(null)}
+              onClick={(_, index) => handleBarClick(index)}
+              className="cursor-pointer"
             >
               {data.map((entry, index) => (
-                <Cell
-                  key={`cell-${index}`}
-                  fill={getBarColor(entry.value)}
-                  style={{ cursor: 'pointer' }}
-                  onClick={() => handleBarClick(index)}
-                />
+                <Cell key={`cell-${index}`} fill={getBarColor(entry.value)} />
               ))}
             </Bar>
           </BarChart>
         </ResponsiveContainer>
 
-        {/* Diamond icon for highest value - positioned 5px above bar */}
-        {maxIndex !== -1 && (
-          <div 
+        {/* Diamond icon for highest value */}
+        {maxIndex !== -1 && barPositions[maxIndex] && (
+          <div
             className="absolute text-blue-500"
             style={{
-              left: `${15 + (maxIndex * (100 / data.length)) + 3}%`,
-              top: `${25 + (100 - data[maxIndex].value) * 2.4 - 5}px`,
-              transform: 'translateX(-120%)'
+              left: `${barPositions[maxIndex].x}px`,
+              top: `${barPositions[maxIndex].y - 20}px`,
+              transform: "translateX(-50%)",
             }}
           >
             <RiVipDiamondFill className="w-6 h-6 text-blue-500 fill-blue-500" />
           </div>
         )}
 
-        {/* Hover tooltip - positioned just above the bar */}
-        {hoveredIndex !== null && (
-          <div 
+        {/* Hover tooltip */}
+        {hoveredIndex !== null && barPositions[hoveredIndex] && (
+          <div
             className="absolute bg-blue-500 text-white px-2 py-1 rounded text-xs font-medium shadow-lg pointer-events-none"
             style={{
-              left: `${15 + (hoveredIndex * (100 / data.length)) + 3}%`,
-              top: `${40 + (100 - data[hoveredIndex].value) * 2.4 - 8}px`,
-              transform: 'translateX(-50%)'
+              left: `${barPositions[hoveredIndex].x}px`,
+              top: `${barPositions[hoveredIndex].y - 8}px`,
+              transform: "translateX(-50%)",
             }}
           >
             {data[hoveredIndex].duration || "30 min"}
@@ -118,13 +154,13 @@ export function WeeklyBarChart({ data = defaultData }: WeeklyBarChartProps) {
         )}
 
         {/* Click tooltip */}
-        {clickedIndex !== null && (
-          <div 
+        {clickedIndex !== null && barPositions[clickedIndex] && (
+          <div
             className="absolute bg-gray-800 text-white px-2 py-1 rounded text-xs font-medium shadow-lg"
             style={{
-              left: `${15 + (clickedIndex * (100 / data.length)) + 3}%`,
-              top: `${40 + (100 - data[clickedIndex].value) * 2.4 - 8}px`,
-              transform: 'translateX(-50%)'
+              left: `${barPositions[clickedIndex].x}px`,
+              top: `${barPositions[clickedIndex].y - 8}px`,
+              transform: "translateX(-50%)",
             }}
           >
             {data[clickedIndex].duration || "30 min"}

@@ -1,13 +1,13 @@
 "use client"
 
-import { SetStateAction, useState } from "react"
+import { type SetStateAction, useState } from "react"
 import { Search, Bell, Check } from "lucide-react"
 import { Input } from "@/components/ui/input"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Checkbox } from "@/components/ui/checkbox"
 import { Button } from "@/components/ui/button"
-import { SiFireship } from "react-icons/si";
-import { IoIosDesktop } from "react-icons/io";
+import { SiFireship } from "react-icons/si"
+import { IoIosDesktop } from "react-icons/io"
 
 interface TodoItem {
   id: string
@@ -32,8 +32,11 @@ const todoItems: TodoItem[] = [
   { id: "4", text: "Report Analysis P2P Business", completed: true },
 ]
 
+interface RightSidebarDashboardProps {
+  onClose?: () => void
+}
 
-export default function RightSidebarDashboard() {
+export default function RightSidebarDashboard({ onClose = () => {} }: RightSidebarDashboardProps = {}) {
   const [todos, setTodos] = useState<TodoItem[]>(todoItems)
   const [searchValue, setSearchValue] = useState("")
   const [activeDays, setActiveDays] = useState<number[]>([0, 1, 2, 3, 4]) // Monday to Friday are active
@@ -43,11 +46,16 @@ export default function RightSidebarDashboard() {
   }
 
   return (
-    <div className="w-[270px] h-[860px] bg-gray-100 rounded-2xl shadow-sm border border-gray-100 overflow-hidden flex flex-col p-2">
-      
+    <div className="w-[270px] h-screen md:h-[860px] bg-gray-100 rounded-2xl shadow-sm border border-gray-100 overflow-hidden flex flex-col p-2  md:overflow-hidden overflow-y-auto">
       {/* Header Section */}
       <div className="p-4 border-b border-gray-100">
         <div className="flex items-center gap-3">
+          {/* Close button for mobile */}
+          <button className="md:hidden p-1 hover:bg-gray-200 rounded-md transition-colors" onClick={() => onClose?.()}>
+            <svg className="w-4 h-4 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+            </svg>
+          </button>
 
           <div className="relative flex-1">
             <Search className="absolute left-2 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
@@ -75,7 +83,7 @@ export default function RightSidebarDashboard() {
       <div className="p-4 border-b border-gray-100 bg-white rounded-3xl mt-5 ">
         <div className="flex items-center gap-2 mb-3">
           <div className=" text-orange-600 flex items-center justify-center">
-            <SiFireship size={24}/>
+            <SiFireship size={24} />
           </div>
           <div className="flex flex-col">
             <span className="text-orange-600 font-medium text-sm">1234 day streak</span>
@@ -94,20 +102,22 @@ export default function RightSidebarDashboard() {
                 }`}
                 onClick={() => {
                   if (activeDays.includes(index)) {
-                    setActiveDays(activeDays.filter(dayIndex => dayIndex !== index));
+                    setActiveDays(activeDays.filter((dayIndex) => dayIndex !== index))
                   } else {
-                    setActiveDays([...activeDays, index]);
+                    setActiveDays([...activeDays, index])
                   }
                 }}
               >
                 {activeDays.includes(index) ? (
                   <svg className="w-3 h-3 text-white" fill="currentColor" viewBox="0 0 20 20">
-                    <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+                    <path
+                      fillRule="evenodd"
+                      d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                      clipRule="evenodd"
+                    />
                   </svg>
                 ) : (
-                  <span className="text-xs text-gray-600 font-medium">
-                    {20 + index}
-                  </span>
+                  <span className="text-xs text-gray-600 font-medium">{20 + index}</span>
                 )}
               </div>
             </div>
@@ -115,22 +125,21 @@ export default function RightSidebarDashboard() {
         </div>
       </div>
 
-
-     {/* Remaining Tasks Section */}
+      {/* Remaining Tasks Section */}
       <div className=" border-b border-gray-100">
-        <h3 className="text-gray-800 font-semibold text-base mb-4 flex items-center gap-2">
-          Remaining Tasks
-        </h3>
-        
+        <h3 className="text-gray-800 font-semibold text-base mb-4 flex items-center gap-2">Remaining Tasks</h3>
+
         <div className="bg-gray-50 rounded-xl p-4 border border-gray-100">
           {tasks.map((task, index) => (
             <div key={index} className="space-y-3">
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-3">
-                  <div className=" bg-[#F2FBEB] rounded-md shadow-sm  p-1 text-[#027A48] "><IoIosDesktop/></div>
+                  <div className=" bg-[#F2FBEB] rounded-md shadow-sm  p-1 text-[#027A48] ">
+                    <IoIosDesktop />
+                  </div>
                   <span className="text-sm font-medium text-gray-700">{task.name}</span>
                 </div>
-                
+
                 <span className="text-sm font-semibold text-emerald-600 bg-emerald-50 px-2 py-1 rounded-lg">
                   {task.progress}%
                 </span>
@@ -138,8 +147,8 @@ export default function RightSidebarDashboard() {
 
               <div className="relative">
                 <div className="w-full bg-emerald-100 rounded-full h-2.5">
-                  <div 
-                    className="bg-gradient-to-r from-[#58CC02] to-[#58CC02] h-2.5 rounded-full transition-all duration-300 shadow-sm" 
+                  <div
+                    className="bg-gradient-to-r from-[#58CC02] to-[#58CC02] h-2.5 rounded-full transition-all duration-300 shadow-sm"
                     style={{ width: `${task.progress}%` }}
                   ></div>
                 </div>
@@ -149,18 +158,16 @@ export default function RightSidebarDashboard() {
         </div>
       </div>
 
-
       {/* To Do List Section */}
       <div className="p-4 flex-1">
         <h3 className="text-gray-900 font-bold text-sm mb-4">To Do List</h3>
         <div className="space-y-3">
-
           {todos.map((todo) => (
             <div key={todo.id} className="space-y-2">
               <div className={`flex items-start gap-3 ${todo.isSubItem ? "ml-6" : ""}`}>
                 <div className="mt-0.5">
                   {todo.completed ? (
-                    <div 
+                    <div
                       className="w-4 h-4 bg-green-500 rounded-sm flex items-center justify-center cursor-pointer"
                       onClick={() => handleTodoToggle(todo.id)}
                     >
@@ -172,9 +179,7 @@ export default function RightSidebarDashboard() {
                       onCheckedChange={() => handleTodoToggle(todo.id)}
                       className="w-4 h-4 border-gray-300"
                     />
-                    
                   )}
-                  
                 </div>
                 <div className="flex-1">
                   <p className={`text-sm ${todo.completed ? "text-gray-500 line-through" : "text-gray-700"}`}>
@@ -194,11 +199,8 @@ export default function RightSidebarDashboard() {
               </div>
             </div>
           ))}
-
         </div>
       </div>
-
-
     </div>
   )
 }

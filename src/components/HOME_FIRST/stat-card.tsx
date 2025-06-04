@@ -56,10 +56,10 @@ export function StatCard({ title, value, type }: StatCardProps) {
       <CardBody className="p-4">
         {/* main div */}
         <div className="flex flex-col">
-          <p className=" text-[12px] sm:text-sm font-medium text-black sm:text-gray-700 mb-1">{title}</p>
+          <p className=" text-sm font-medium text-black sm:text-gray-700 mb-1">{title}</p>
 
           {/* value and icon */}
-          <div className="flex flex-col sm:justify-between sm:flex-row items-center">
+          <div className="flex  justify-between flex-row items-center">
             {/* value */}
             <div className="flex gap-1">
               <h1 className="text-2xl sm:text-3xl font-bold">{value}</h1>
