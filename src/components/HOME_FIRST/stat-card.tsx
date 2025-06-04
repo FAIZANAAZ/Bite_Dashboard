@@ -56,13 +56,13 @@ export function StatCard({ title, value, type }: StatCardProps) {
       <CardBody className="p-4">
         {/* main div */}
         <div className="flex flex-col">
-          <p className="text-sm font-medium text-gray-700 mb-1">{title}</p>
+          <p className=" text-[12px] sm:text-sm font-medium text-black sm:text-gray-700 mb-1">{title}</p>
 
           {/* value and icon */}
           <div className="flex flex-col sm:justify-between sm:flex-row items-center">
             {/* value */}
             <div className="flex gap-1">
-              <h1 className="text-3xl font-bold">{value}</h1>
+              <h1 className="text-2xl sm:text-3xl font-bold">{value}</h1>
               <div className="mt-1 flex flex-col items-center">
               
                 <div className="w-10 h-6 -mb-1">
@@ -79,7 +79,7 @@ export function StatCard({ title, value, type }: StatCardProps) {
                     </AreaChart>
                   </ResponsiveContainer>
                 </div>
-                <p className="text-xs text-gray-500 leading-0">than last days</p>
+                <p className="text-[10px] sm:text-xs text-gray-500 leading-0 ">than last days</p>
               </div>
             </div>
 

@@ -1,5 +1,5 @@
 "use client"
-import { StatCard } from "@/components/stat-card"
+import { StatCard } from "@/components/HOME_FIRST/stat-card"
 
 export function StatsSection() {
   // Data stays in component

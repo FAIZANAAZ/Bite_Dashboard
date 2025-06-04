@@ -1,4 +1,4 @@
-import { CourseCard } from "@/components/course-card"
+import { CourseCard } from "@/components/HOME_FIRST/prograsscard"
 
 export function OngoingCourses() {
   // Data stays in component
