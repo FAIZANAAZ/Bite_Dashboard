@@ -1,6 +1,3 @@
-"use client"
-
-import { useState } from "react"
 import Link from "next/link"
 import Image from "next/image"
 import { X } from "lucide-react"
@@ -66,28 +63,20 @@ const navigationItems = [
 ]
 
 interface SidebarProps {
-  onMenuItemClick?: () => void
+  activeItem?: string
 }
 
-export default function Sidebar({ onMenuItemClick }: SidebarProps) {
-  const [activeItem, setActiveItem] = useState("HOME")
-
-  const handleItemClick = (itemName: string) => {
-    setActiveItem(itemName)
-    // Call the parent's click handler to close sidebars on mobile
-    onMenuItemClick?.()
-  }
-
+export default function Sidebar({ activeItem = "HOME" }: SidebarProps) {
   return (
     <div className="flex flex-col h-full w-full max-w-[20rem] bg-white rounded-3xl p-4 shadow-lg relative">
-      {/* Mobile close button - only visible on mobile */}
-      <button
-        onClick={onMenuItemClick}
+      {/* Mobile close button */}
+      <Link
+        href="?leftSidebar=false&rightSidebar=false"
         className="md:hidden absolute top-4 right-4 p-1 rounded-full hover:bg-gray-100"
         aria-label="Close sidebar"
       >
         <X className="h-6 w-6 text-gray-500" />
-      </button>
+      </Link>
 
       <div className="mb-6 px-2">
         <h1 className="text-2xl font-bold text-blue-400">codebite</h1>
@@ -98,7 +87,11 @@ export default function Sidebar({ onMenuItemClick }: SidebarProps) {
           const isActive = activeItem === item.name
 
           return (
-            <Link key={item.name} href={item.href} onClick={() => handleItemClick(item.name)} className="block">
+            <Link
+              key={item.name}
+              href={`${item.href}${item.href === "/" ? "?activeItem=" + item.name : "&activeItem=" + item.name}`}
+              className="block"
+            >
               <Button
                 variant={isActive ? "default" : "ghost"}
                 className={`w-full justify-start h-14 rounded-xl font-bold
